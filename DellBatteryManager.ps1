@@ -21,7 +21,7 @@
 
 .PARAMETER Language
     Langue de l'interface pour cette exécution (fr ou en), sans modifier la préférence enregistrée.
-    Sinon : choix fait dans le menu Langue, ou à défaut la langue de Windows.
+    Sinon : choix fait dans le menu Langue, ou à défaut l'anglais.
 #>
 param(
     [switch]$ShowConsole,
@@ -195,7 +195,7 @@ $Core = {
         # Tr 'Clé' [arguments de mise en forme...] : texte dans la langue active, nombres au format de cette langue.
         param([string]$Key)
         if (-not $global:DbmText) { $global:DbmText = Get-TextTable }
-        $en = $global:DbmShared -and $global:DbmShared.Lang -eq 'en'
+        $en = -not $global:DbmShared -or $global:DbmShared.Lang -ne 'fr'   # anglais par défaut
         $pair = $global:DbmText[$Key]
         $text = if (-not $pair) { $Key } elseif ($en) { $pair[1] } else { $pair[0] }
         if (-not $args.Count) { return $text }
@@ -347,7 +347,12 @@ $Core = {
         if (-not $cctkArgs) { return }
         if ($Password) { $cctkArgs += "--ValSetupPwd=$Password" }
         $r = Invoke-Cctk $cctkArgs
-        if ($r.ExitCode -ne 0) { throw (Tr 'Err.CctkWrite' $r.ExitCode $r.Output.Trim()) }
+        if ($r.ExitCode -ne 0) {
+            # Le message part à l'écran et dans erreurs.log : on n'y laisse jamais le mot de passe.
+            $output = $r.Output.Trim()
+            if ($Password) { $output = $output.Replace($Password, '***') }
+            throw (Tr 'Err.CctkWrite' $r.ExitCode $output)
+        }
     }
 
     function Get-BatteryLive {
@@ -663,7 +668,7 @@ function Get-SavedLanguage {
             if ($saved -in 'fr', 'en') { return $saved }
         }
     } catch { }
-    if ((Get-UICulture).TwoLetterISOLanguageName -eq 'fr') { 'fr' } else { 'en' }
+    'en'   # langue par défaut
 }
 
 function Save-Language {
