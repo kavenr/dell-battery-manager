@@ -6,3 +6,4 @@
 # Journaux et captures produits en local (-Snapshot)
 *.log
 *.png
+!/docs/*.png

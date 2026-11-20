@@ -4,6 +4,10 @@ Windows app to view and change the battery settings stored in a Dell laptop's BI
 
 A single PowerShell + WPF script. Nothing to install.
 
+![Battery tab](docs/battery.png)
+
+![Charge mode tab](docs/charge-mode.png)
+
 ## Features
 
 - **Battery**: charge level, status, power, voltage, current and design capacity, health, cycle count.
