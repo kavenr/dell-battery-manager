@@ -1,0 +1,3 @@
+# Projet Windows : fichiers conservés tels quels (CRLF, BOM UTF-8 requis par PowerShell 5.1, fixture UTF-16),
+# sans conversion des fins de ligne par Git.
+* -text

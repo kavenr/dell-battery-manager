@@ -1,0 +1,8 @@
+# Fichiers d'investigation (relevés sur la machine, notes) : gardés en local, hors du dépôt
+/fixtures/
+/scripts/
+/PLAN.md
+
+# Journaux et captures produits en local (-Snapshot)
+*.log
+*.png
